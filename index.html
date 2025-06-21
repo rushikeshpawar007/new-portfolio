@@ -40,26 +40,15 @@
         .content-wrapper { position: relative; z-index: 1; }
         .section-title { display: flex; align-items: center; justify-content: center; gap: 0.75rem; color: var(--heading-color); }
         .glass-card { background: var(--glass-bg); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid var(--glass-border); border-radius: 1.25rem; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; }
-        .glass-card:hover { box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.12); transform: translateY(-8px); }
         .ios-button { border-radius: 9999px; font-weight: 600; padding: 0.75rem 1.5rem; transition: all 0.2s ease; box-shadow: 0 4px 15px -5px rgba(0,0,0,0.1); display: inline-block; }
-        .ios-button:hover { transform: scale(1.05); box-shadow: 0 8px 20px -5px var(--accent-color); }
         .primary-btn { background: var(--accent-color); color: #111827; }
         html[data-theme='light'] .primary-btn { color: white; }
-        .primary-btn:hover { background: var(--accent-hover); }
         .secondary-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--accent-color); }
 
         /* --- Particle Background --- */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            filter: blur(1.5px);
-        }
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: blur(1.5px); }
         
-        /* --- TIMELINE, SKILLS, CHAT --- */
+        /* --- TIMELINE --- */
         .timeline { position: relative; max-width: 1200px; margin: 0 auto; }
         .timeline::after { content: ''; position: absolute; width: 2px; background-color: var(--timeline-line); top: 0; bottom: 0; left: 50%; margin-left: -1px; }
         .timeline-container { padding: 10px 40px; position: relative; background-color: inherit; width: 50%; }
@@ -68,12 +57,18 @@
         .timeline-container::after { content: ''; position: absolute; width: 16px; height: 16px; right: -8px; background-color: var(--accent-color); border: 4px solid var(--bg-color); top: 25px; border-radius: 50%; z-index: 1; box-shadow: 0 0 0 4px var(--accent-color); opacity: 0.5;}
         .timeline-logo { transition: transform 0.4s ease, filter 0.4s ease; filter: var(--logo-filter); transform: scale(0.9); border-radius: 9999px; }
         .timeline-container.active .timeline-logo { filter: var(--logo-active-filter); transform: scale(1); }
+        .experience-accordion-content { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.5s ease-out; }
+        .experience-card.open .experience-accordion-content { grid-template-rows: 1fr; }
+        .accordion-toggle { transition: transform 0.3s ease; }
+        .experience-card.open .accordion-toggle { transform: rotate(45deg); }
         @media screen and (max-width: 768px) {
             .timeline::after { left: 20px; }
             .timeline-container { width: 100%; padding-left: 50px; padding-right: 15px; }
             .timeline-container.right { left: 0%; }
             .timeline-container.left::after, .timeline-container.right::after { left: 12px; }
         }
+
+        /* --- SKILLS & CHAT --- */
         .skill-tag { opacity: 0; transform: scale(0.8); transition: opacity 0.4s ease, transform 0.4s ease; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 9999px; padding: 0.5rem 1rem; font-weight: 500; }
         .skill-tag.visible { opacity: 1; transform: scale(1); }
         #chat-widget { position: fixed; bottom: 2rem; left: 2rem; z-index: 1000; }
@@ -175,42 +170,102 @@
                 </h2>
                 <div class="timeline">
                      <div class="timeline-container left">
-                        <div class="glass-card p-6 flex flex-col sm:flex-row items-center gap-6">
-                            <img src="https://placehold.co/100x100/eee8d5/586e75?text=Lecturio" alt="Lecturio Logo" class="timeline-logo h-16 w-16 object-cover">
-                            <div>
-                                <h3 class="text-xl font-bold text-[var(--heading-color)]">Business/Data Analyst</h3>
-                                <p class="text-md text-[var(--accent-color)] font-medium my-1">Lecturio GmbH</p>
-                                <p class="text-sm text-inherit opacity-80 mb-2">Sept 2023 – present</p>
+                        <div class="glass-card experience-card">
+                            <div class="p-6 flex items-center gap-6 cursor-pointer experience-accordion-trigger">
+                                <img src="https://placehold.co/100x100/eee8d5/586e75?text=L" alt="Lecturio Logo" class="timeline-logo h-16 w-16 object-cover">
+                                <div class="flex-grow">
+                                    <h3 class="text-xl font-bold text-[var(--heading-color)]">Business/Data Analyst</h3>
+                                    <p class="text-md text-[var(--accent-color)] font-medium my-1">Lecturio GmbH</p>
+                                    <p class="text-sm text-inherit opacity-80 mb-2">Sept 2023 – present</p>
+                                </div>
+                                <div class="accordion-toggle text-2xl text-[var(--accent-color)]">+</div>
+                            </div>
+                            <div class="experience-accordion-content grid">
+                                <div class="overflow-hidden">
+                                    <div class="p-6 border-t border-[var(--glass-border)]">
+                                        <h4 class="font-bold mt-2 text-[var(--heading-color)]">Challenge:</h4>
+                                        <p class="text-sm mb-4">Faced manual and time-consuming finance reporting processes.</p>
+                                        <h4 class="font-bold text-[var(--heading-color)]">Solution:</h4>
+                                        <p class="text-sm mb-4">Leveraged Power BI to integrate data, developed dynamic dashboards, and utilized advanced analytics for variance analysis and forecasting.</p>
+                                        <h4 class="font-bold text-[var(--heading-color)]">Impact:</h4>
+                                        <p class="text-sm">Achieved a 40% reduction in reporting time, enabling management to access detailed analyses and make more proactive decisions.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="timeline-container right">
-                        <div class="glass-card p-6 flex flex-col sm:flex-row items-center gap-6">
-                            <img src="https://placehold.co/100x100/eee8d5/586e75?text=CARIAD" alt="CARIAD Logo" class="timeline-logo h-16 w-16 object-cover">
-                            <div>
-                                <h3 class="text-xl font-bold text-[var(--heading-color)]">Werkstudent Data Analytics / Data Science</h3>
-                                <p class="text-md text-[var(--accent-color)] font-medium my-1">CARIAD SE - Volkswagen group</p>
-                                <p class="text-sm text-inherit opacity-80 mb-2">Sept 2022 – Aug 2023</p>
+                        <div class="glass-card experience-card">
+                           <div class="p-6 flex items-center gap-6 cursor-pointer experience-accordion-trigger">
+                                <img src="https://placehold.co/100x100/eee8d5/586e75?text=C" alt="CARIAD Logo" class="timeline-logo h-16 w-16 object-cover">
+                                <div class="flex-grow">
+                                    <h3 class="text-xl font-bold text-[var(--heading-color)]">Werkstudent Data Analytics / Data Science</h3>
+                                    <p class="text-md text-[var(--accent-color)] font-medium my-1">CARIAD SE - Volkswagen group</p>
+                                    <p class="text-sm text-inherit opacity-80 mb-2">Sept 2022 – Aug 2023</p>
+                                </div>
+                                <div class="accordion-toggle text-2xl text-[var(--accent-color)]">+</div>
+                            </div>
+                             <div class="experience-accordion-content grid">
+                                <div class="overflow-hidden">
+                                    <div class="p-6 border-t border-[var(--glass-border)]">
+                                        <h4 class="font-bold mt-2 text-[var(--heading-color)]">Challenge:</h4>
+                                        <p class="text-sm mb-4">Disparate data sources and fragmented reporting tools with unclear performance metrics.</p>
+                                        <h4 class="font-bold text-[var(--heading-color)]">Solution:</h4>
+                                        <p class="text-sm mb-4">Utilized Athena (SQL), Power BI, and AWS to centralize data-driven solutions, defined key KPIs, and led the full lifecycle of analytics projects.</p>
+                                        <h4 class="font-bold text-[var(--heading-color)]">Impact:</h4>
+                                        <p class="text-sm">Achieved faster response to business queries, improved cross-team collaboration, and streamlined project delivery.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                      <div class="timeline-container left">
-                        <div class="glass-card p-6 flex flex-col sm:flex-row items-center gap-6">
-                            <img src="https://placehold.co/100x100/eee8d5/586e75?text=KPMG" alt="KPMG Logo" class="timeline-logo h-16 w-16 object-cover">
-                            <div>
-                                <h3 class="text-xl font-bold text-[var(--heading-color)]">Werkstudent Data Analytics / Data Science</h3>
-                                <p class="text-md text-[var(--accent-color)] font-medium my-1">KPMG Deutschland</p>
-                                <p class="text-sm text-inherit opacity-80 mb-2">Mar 2022 – Aug 2022</p>
+                        <div class="glass-card experience-card">
+                            <div class="p-6 flex items-center gap-6 cursor-pointer experience-accordion-trigger">
+                                <img src="https://placehold.co/100x100/eee8d5/586e75?text=K" alt="KPMG Logo" class="timeline-logo h-16 w-16 object-cover">
+                                <div class="flex-grow">
+                                    <h3 class="text-xl font-bold text-[var(--heading-color)]">Werkstudent Data Analytics / Data Science</h3>
+                                    <p class="text-md text-[var(--accent-color)] font-medium my-1">KPMG Deutschland</p>
+                                    <p class="text-sm text-inherit opacity-80 mb-2">Mar 2022 – Aug 2022</p>
+                                </div>
+                                <div class="accordion-toggle text-2xl text-[var(--accent-color)]">+</div>
+                            </div>
+                             <div class="experience-accordion-content grid">
+                                <div class="overflow-hidden">
+                                    <div class="p-6 border-t border-[var(--glass-border)]">
+                                        <h4 class="font-bold mt-2 text-[var(--heading-color)]">Challenge:</h4>
+                                        <p class="text-sm mb-4">Complex analysis of large SAP authorization datasets and slow Qlik Sense dashboard performance.</p>
+                                        <h4 class="font-bold text-[var(--heading-color)]">Solution:</h4>
+                                        <p class="text-sm mb-4">Employed SQL Server for data analysis, automated data processing with Python, and enhanced dashboard performance with targeted load scripts in an agile environment.</p>
+                                        <h4 class="font-bold text-[var(--heading-color)]">Impact:</h4>
+                                        <p class="text-sm">Delivered actionable insights from complex SAP data, streamlined data operations, and achieved a significantly faster Qlik Sense dashboard.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="timeline-container right">
-                         <div class="glass-card p-6 flex flex-col sm:flex-row items-center gap-6">
-                            <img src="https://placehold.co/100x100/eee8d5/586e75?text=SM+Auto" alt="SM Auto Engineering Logo" class="timeline-logo h-16 w-16 object-cover">
-                            <div>
-                                <h3 class="text-xl font-bold text-[var(--heading-color)]">Inventory Controller</h3>
-                                <p class="text-md text-[var(--accent-color)] font-medium my-1">S.M.Auto Engineering</p>
-                                <p class="text-sm text-inherit opacity-80 mb-2">Nov 2019 – May 2021</p>
+                         <div class="glass-card experience-card">
+                            <div class="p-6 flex items-center gap-6 cursor-pointer experience-accordion-trigger">
+                                <img src="https://placehold.co/100x100/eee8d5/586e75?text=S" alt="SM Auto Engineering Logo" class="timeline-logo h-16 w-16 object-cover">
+                                <div class="flex-grow">
+                                    <h3 class="text-xl font-bold text-[var(--heading-color)]">Inventory Controller</h3>
+                                    <p class="text-md text-[var(--accent-color)] font-medium my-1">S.M.Auto Engineering</p>
+                                    <p class="text-sm text-inherit opacity-80 mb-2">Nov 2019 – May 2021</p>
+                                </div>
+                                <div class="accordion-toggle text-2xl text-[var(--accent-color)]">+</div>
+                            </div>
+                             <div class="experience-accordion-content grid">
+                                <div class="overflow-hidden">
+                                    <div class="p-6 border-t border-[var(--glass-border)]">
+                                        <h4 class="font-bold mt-2 text-[var(--heading-color)]">Challenge:</h4>
+                                        <p class="text-sm mb-4">Lack of structured data from mechanical tools and high, unjustifiable expenditure on spare parts.</p>
+                                        <h4 class="font-bold text-[var(--heading-color)]">Solution:</h4>
+                                        <p class="text-sm mb-4">Systematically collected and analyzed fixture and spare parts data, presenting visual insights to the company owner.</p>
+                                        <h4 class="font-bold text-[var(--heading-color)]">Impact:</h4>
+                                        <p class="text-sm">Achieved a substantial savings of 0.2 million Rupees by providing actionable insights on expenditure.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -422,20 +477,28 @@
                 const mouse = { x: null, y: null };
 
                 class Particle {
-                    constructor(x, y, vx, vy, radius, color) {
+                    constructor(x, y, vx, vy, radius, color, lifetime) {
                         this.x = x; this.y = y; this.vx = vx; this.vy = vy;
                         this.baseRadius = radius; this.radius = radius;
                         this.color = color;
+                        this.lifetime = lifetime;
+                        this.initialLife = lifetime;
                         this.pushX = 0; this.pushY = 0;
                         this.friction = 0.95;
                     }
                     update() {
                         if (mouse.x !== null) {
-                            const dx = this.x - mouse.x;
-                            const dy = this.y - mouse.y;
-                            const distance = Math.sqrt(dx * dx + dy * dy);
-                            const influenceRadius = 150;
+                            let dx = this.x - mouse.x;
+                            let dy = this.y - mouse.y;
+                            let distance = Math.sqrt(dx * dx + dy * dy);
                             
+                            if (distance === 0) {
+                                distance = 0.1;
+                                dx = 0.1;
+                                dy = 0.1;
+                            }
+                            
+                            const influenceRadius = 150;
                             if (distance < influenceRadius) {
                                 const force = (influenceRadius - distance) / influenceRadius;
                                 this.pushX += (dx / distance) * force * 0.25;
@@ -448,10 +511,11 @@
                         this.x += this.vx + this.pushX;
                         this.y += this.vy + this.pushY;
 
-                        if (this.x < this.radius) { this.x = this.radius; this.vx *= -1; }
-                        if (this.x > canvas.width - this.radius) { this.x = canvas.width - this.radius; this.vx *= -1; }
-                        if (this.y < this.radius) { this.y = this.radius; this.vy *= -1; }
-                        if (this.y > canvas.height - this.radius) { this.y = canvas.height - this.radius; this.vy *= -1; }
+                        this.radius = Math.max(0, this.baseRadius * (this.lifetime / this.initialLife));
+
+                        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                            this.lifetime = 0;
+                        }
                     }
                     draw() {
                         ctx.beginPath();
@@ -464,49 +528,58 @@
                     }
                 }
 
-                function initParticles() {
-                    particles = [];
-                    const colors = [
+                function getThemeColors() {
+                     return [
                         getComputedStyle(document.documentElement).getPropertyValue('--particle-color-1').trim(),
-                        getComputedStyle(document.documentElement).getPropertyValue('--particle-color-2').trim(),
-                        getComputedStyle(document.documentElement).getPropertyValue('--particle-color-3').trim()
+                        getComputedStyle(document.documentElement).getPropertyValue('--particle-color-2').trim()
                     ];
-                    
-                    const numberOfParticles = Math.floor((canvas.width * canvas.height) / 12000);
-                    for (let i = 0; i < numberOfParticles; i++) {
-                        const radius = Math.random() * 4 + 2;
-                        const x = Math.random() * canvas.width;
-                        const y = Math.random() * canvas.height;
-                        const vx = (Math.random() - 0.5) * 0.3;
-                        const vy = (Math.random() - 0.5) * 0.3;
+                }
+
+                function addParticles(count, x, y, burst = false) {
+                    const colors = getThemeColors();
+                    for (let i = 0; i < count; i++) {
+                        const angle = Math.random() * Math.PI * 2;
+                        const speed = burst ? Math.random() * 5 + 2 : Math.random() * 2 + 0.5;
+                        const vx = Math.cos(angle) * speed;
+                        const vy = Math.sin(angle) * speed;
+                        const radius = burst ? Math.random() * 4 + 2 : Math.random() * 3 + 1;
                         const color = colors[Math.floor(Math.random() * colors.length)];
-                        particles.push(new Particle(x, y, vx, vy, radius, color));
+                        const lifetime = Math.random() * 60 + 30;
+                        particles.push(new Particle(x, y, vx, vy, radius, color, lifetime));
                     }
                 }
 
                 function resizeCanvas() {
                     canvas.width = window.innerWidth;
                     canvas.height = window.innerHeight;
-                    initParticles();
                 }
 
                 function animate() {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    particles.forEach(p => {
-                        p.update();
-                        p.draw();
-                    });
+                    
+                    if (mouse.x !== null) {
+                        addParticles(1, mouse.x, mouse.y);
+                    }
+
+                    for (let i = particles.length - 1; i >= 0; i--) {
+                        particles[i].update();
+                        particles[i].draw();
+                        if (particles[i].lifetime <= 0) {
+                            particles.splice(i, 1);
+                        }
+                    }
                     requestAnimationFrame(animate);
                 }
 
-                window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+                window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
                 window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+                window.addEventListener('click', e => addParticles(25, e.clientX, e.clientY, true));
                 window.addEventListener('resize', resizeCanvas);
                 
                 const themeToggle = document.getElementById('theme-toggle');
                 if (themeToggle) {
                     themeToggle.addEventListener('click', () => {
-                        setTimeout(initParticles, 100);
+                        // Colors are read dynamically, no re-init needed
                     });
                 }
                 
@@ -541,13 +614,27 @@
                 });
             }
             
-            // --- ALL OTHER SCRIPTS (Menu, Observers, Chatbot etc.) ---
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             if (mobileMenuButton && mobileMenu) {
                 mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
                 mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('hidden')));
             }
+
+            const accordionTriggers = document.querySelectorAll('.experience-accordion-trigger');
+            accordionTriggers.forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    const card = trigger.closest('.experience-card');
+                    
+                    document.querySelectorAll('.experience-card.open').forEach(openCard => {
+                        if (openCard !== card) {
+                            openCard.classList.remove('open');
+                        }
+                    });
+                    
+                    card.classList.toggle('open');
+                });
+            });
 
             const skillsContainer = document.getElementById('skills-container');
             if (skillsContainer) {
@@ -591,7 +678,7 @@
                 });
             }
             
-            const botContext = `You are a friendly, professional AI assistant for Rushikesh Pawar's portfolio website. Your goal is to answer questions from visitors based on the information provided below. Keep answers concise and helpful. Do not make up information. If you don't know the answer, say "I don't have that information, but you can contact Rushikesh directly to ask."\n\nInformation about Rushikesh Pawar:\n- Name: Rushikesh Pawar\n- Title: Data Enthusiast & Analytics Professional\n- Current Activity: Pursuing a Master’s Degree at HTW Berlin.\n- About: He is a mechanical graduate whose work with data handling sparked his curiosity in Data Analysis. He is passionate about data visualization, especially with Tableau.\n- Work Experience:\n    - Business/Data Analyst at Lecturio GmbH (Sept 2023 – present).\n    - Werkstudent Data Analytics / Data Science at CARIAD SE (Volkswagen group, Sept 2022 – Aug 2023).\n    - Werkstudent Data Analytics / Data Science at KPMG Deutschland (Mar 2022 – Aug 2022).\n    - Inventory Controller at S.M.Auto Engineering (Nov 2019 – May 2021).\n- Key Skills: Python, SQL, Tableau, Power BI, Data Visualization, Data Analysis, Data Science.\n- Projects (GitHub/Tableau): NBA Dataset Analysis, Join US (SQL), Google Store Analysis, Pokemon Dataset (Tableau), Instagram Clone (SQL), Spotify Dataset (Tableau).`;
+            const botContext = `You are a friendly, professional AI assistant for Rushikesh Pawar's portfolio website. Your goal is to answer questions from visitors based on the information provided below. Keep answers concise and helpful. Do not make up information. If you don't know the answer, say "I don't have that information, but you can contact Rushikesh directly to ask."\n\nInformation about Rushikesh Pawar:\n- Name: Rushikesh Pawar\n- Title: Data Enthusiast & Analytics Professional\n- Current Activity: Pursuing a Master’s Degree at HTW Berlin.\n- About: He is a mechanical graduate whose work with data handling sparked his curiosity in Data Analysis. He is passionate about data visualization, especially with Tableau.\n- Work Experience Details:\n    - Business/Data Analyst at Lecturio GmbH (Sept 2023 – present): Challenge was manual finance reporting. Solution was using Power BI to build dynamic dashboards, which reduced reporting time by 40% and enabled proactive decisions.\n    - Werkstudent Data Analytics / Data Science at CARIAD SE (Volkswagen group, Sept 2022 – Aug 2023): Challenge was disparate data sources. Solution was using Athena (SQL) and Power BI, defined KPIs, and led analytics projects.\n    - Werkstudent Data Analytics / Data Science at KPMG Deutschland (Mar 2022 – Aug 2022): Challenge was complex SAP data analysis. Solution was using SQL Server and automating tasks with Python, which delivered faster insights and a more performant Qlik Sense dashboard.\n    - Inventory Controller at S.M.Auto Engineering (Nov 2019 – May 2021): Challenge was high spare parts expenditure. Solution was analyzing parts data and presenting visual insights, which saved 0.2 million Rupees.\n- Key Skills: Python, SQL, Tableau, Power BI, Data Visualization, Data Analysis, Data Science, AWS, Alteryx, Salesforce, GitHub, DAX.\n- Projects (GitHub/Tableau): NBA Dataset Analysis, Join US (SQL), Google Store Analysis, Pokemon Dataset (Tableau), Instagram Clone (SQL), Spotify Dataset (Tableau).`;
             const apiKey = "AIzaSyD1z0mLd_ZnIEk5mKYdlJHutIdqOgFiNfs"; 
 
             const callGemini = async (prompt, context) => {
@@ -662,14 +749,14 @@
                 const chatBody = document.getElementById('chat-body');
                 const chatPrompts = document.getElementById('chat-prompts');
                 let localChatHistory = [];
-                const promptSuggestions = ["What are his key skills?", "Tell me about his work at Volkswagen.", "Which projects used Python?"];
+                const promptSuggestions = ["What was his impact at KPMG?", "Tell me about the Lecturio role.", "Which projects used Python?"];
 
                 const addMessage = (sender, text) => {
                     const messageElement = document.createElement('div');
                     messageElement.classList.add('chat-message', sender, 'p-3', 'rounded-lg', 'max-w-xs', 'mb-2', 'break-words', 'leading-relaxed');
                     messageElement.textContent = text;
                     chatBody.appendChild(messageElement);
-                    messageElement.scrollIntoView({ behavior: "smooth" });
+                    chatBody.scrollTop = chatBody.scrollHeight;
                 };
 
                 const addPromptStarters = () => {
@@ -713,7 +800,7 @@
                         typingElement.classList.add('chat-message', 'bot', 'p-3', 'rounded-lg', 'max-w-xs', 'mb-2');
                         typingElement.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
                         chatBody.appendChild(typingElement);
-                        typingElement.scrollIntoView({ behavior: "smooth" });
+                        chatBody.scrollTop = chatBody.scrollHeight;
                     }
                 };
                 
